@@ -71,39 +71,41 @@ public class ModifXMLSilverpeas extends ModifFile {
           if (em.getSearch().compareTo(value) == 0) {
 
             if (em instanceof ElementMultiValues) {
-              //pour l'instant on sauvegarde le fichier si il y a des ElementMultiValues
+              // pour l'instant on sauvegarde le fichier si il y a des
+              // ElementMultiValues
               if (!isModified) {
                 isModified = true;
                 BackupFile bf = new BackupFile(new File(path));
                 bf.makeBackup();
               }
               Iterator iterMultiVal = ((ElementMultiValues) em).getIterator();
-              List listeParamValue = currentNode.getParentElement().getChildren("param-value");
+              List listeParamValue = currentNode.getParentElement()
+                  .getChildren("param-value");
               Iterator iListeParamValue = listeParamValue.iterator();
 
               while (iterMultiVal.hasNext()) {
                 if (iListeParamValue.hasNext()) {
                   Object o = iListeParamValue.next();
                   ((Element) o).setText((String) iterMultiVal.next());
-                }
-                else {
+                } else {
                   Element newElement = new Element("param-value");
                   newElement.setText((String) iterMultiVal.next());
                   currentNode.getParentElement().addContent(newElement);
                 }
               }
 
-            }
-            else {
-              //((Element)currentNode).getParent().getChild("param-value").setText(em.getModif());
-              String val = ((Element) currentNode).getParentElement().getChild("param-value").getTextTrim();
+            } else {
+              // ((Element)currentNode).getParent().getChild("param-value").setText(em.getModif());
+              String val = ((Element) currentNode).getParentElement().getChild(
+                  "param-value").getTextTrim();
               if (!val.equals(em.getModif())) {
                 if (!isModified) {
                   isModified = true;
                   BackupFile bf = new BackupFile(new File(path));
                   bf.makeBackup();
                 }
-                ((Element) currentNode).getParentElement().getChild("param-value").setText(em.getModif());
+                ((Element) currentNode).getParentElement().getChild(
+                    "param-value").setText(em.getModif());
               }
             }
           }
@@ -130,8 +132,10 @@ public class ModifXMLSilverpeas extends ModifFile {
     Format format = Format.getPrettyFormat();
     format.setIndent("\t");
     format.setTextMode(Format.TextMode.TRIM);
-    /*XMLOutputter serializer = new XMLOutputter("\t",true);
-    serializer.setTrimText(true);*/
+    /*
+     * XMLOutputter serializer = new XMLOutputter("\t",true);
+     * serializer.setTrimText(true);
+     */
     XMLOutputter serializer = new XMLOutputter(format);
     serializer.output(doc, out);
     out.flush();
@@ -148,13 +152,12 @@ public class ModifXMLSilverpeas extends ModifFile {
       mp.createFileBak(null);
       mp.addModification("AddressBooksTitle", "ouais et toi");
       emv = new ElementMultiValues("AddressBooksTitle");
-      String[] test = {"toto", "titi"};
+      String[] test = { "toto", "titi" };
       emv.addValue("toto");
       emv.addValue("titi");
       mp.addModification(emv);
       mp.executeModification();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }

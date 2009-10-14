@@ -33,21 +33,27 @@ package com.silverpeas.FileUtil;
  */
 import bsh.Interpreter;
 import java.util.Hashtable;
+import java.util.Map.Entry;
 
 public class GestionVariables {
 
   /**
    * Hashtable contenant toutes les variables et leurs valeurs
    */
-  private Hashtable listeVariables;
-
+  private Hashtable<String, String> listeVariables;
   /**
    * @constructor construtor principale de la classe
    */
   public GestionVariables() {
     listeVariables = new Hashtable();
+    for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
+      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
+    }
+    for (Entry<String, String> entry : System.getenv().entrySet()) {
+      addVariable(entry.getKey(), entry.getValue());
+    }
   }
-
+  
   /**
    * ajout d'une variable dans la base
    */
@@ -64,11 +70,9 @@ public class GestionVariables {
   }
 
   /**
-   * resolution de string les variables doivent être de la forme ${variable}
-   * il n'y a pas de contrainte aux niveaux du nombre de variables utilisées
-   * ex: path=c:\tmp
-   *     rep=\lib\
-   * ${path}{$rep}\toto ->c:\tmp\lib\toto
+   * resolution de string les variables doivent être de la forme ${variable} il
+   * n'y a pas de contrainte aux niveaux du nombre de variables utilisées ex:
+   * path=c:\tmp rep=\lib\ ${path}{$rep}\toto ->c:\tmp\lib\toto
    */
   public String resolveString(String pStr) throws Exception {
     String newString = "";
@@ -81,41 +85,37 @@ public class GestionVariables {
         newString = newString.concat(tmp.substring(0, index));
         index_fin = tmp.indexOf('}');
 
-        newString = newString.concat(this.getValue(tmp.substring(index + 2, index_fin)));
+        newString = newString.concat(this.getValue(tmp.substring(index + 2,
+                index_fin)));
         tmp = tmp.substring(index_fin + 1);
         index = tmp.indexOf("${");
       }
       newString = newString.concat(tmp);
       return newString;
-    }
-    else {
+    } else {
       return pStr;
     }
   }
 
   /**
-   *  résolution des variables d'une string
-   *  puis evaluation dynamique d'une string de la forme $eval{{.....}}
+   * résolution des variables d'une string puis evaluation dynamique d'une
+   * string de la forme $eval{{.....}}
    */
   public String resolveAndEvalString(String pStr) throws Exception {
-
     int index = pStr.indexOf("$eval{{");
-
     if (index == -1) {
-      // chaine classique statique
       return resolveString(pStr);
-
-    }
-    else {
-      // chaine à évaluation dynamique
+    } else {
       if (index != 0) {
-        throw new Exception("(unable to evaluate " + pStr + " because string is not beginning with \"$eval{{\" sequence.");
+        throw new Exception("(unable to evaluate " + pStr
+                + " because string is not beginning with \"$eval{{\" sequence.");
       }
 
       int index_fin = pStr.indexOf("}}");
 
       if (index_fin != pStr.length() - 2) {
-        throw new Exception("(unable to evaluate " + pStr + " because string is not endding with \"}}\" sequence.");
+        throw new Exception("(unable to evaluate " + pStr
+                + " because string is not endding with \"}}\" sequence.");
       }
 
       String resolvedString = pStr.substring(0, index_fin);
@@ -124,45 +124,22 @@ public class GestionVariables {
 
       // évaluation dynamique
       Interpreter bsh = new bsh.Interpreter();
-
-// System.out.println("valeur avant substitution="+resolvedString);
-
       bsh.set("value", new String());
       bsh.eval(resolvedString);
       String evaluatedString = (String) bsh.get("value");
-
-// System.out.println("valeur apres substitution="+evaluatedString);
-
       return evaluatedString;
-    } // if
+    }
   }
 
   /**
    * @return la valeur de la variable
    */
   public String getValue(String pVar) throws Exception {
-    String tmp = (String) listeVariables.get(pVar);
-
+    String tmp = listeVariables.get(pVar);
     if (tmp == null) {
-      throw new Exception("La variable :\"" + pVar + "\" n'existe pas dans la base");
+      throw new Exception("La variable :\"" + pVar
+              + "\" n'existe pas dans la base");
     }
     return tmp;
-  }
-
-  public static void main(String[] args) {
-    GestionVariables gv;
-    System.out.println("test des variables");
-    try {
-      gv = new GestionVariables();
-      gv.addVariable(new String("path"), "c:\\thomas");
-      gv.addVariable(new String("rep"), "\\lib\\tutu\\");
-      System.out.println("value:" + gv.getValue("rep"));
-      System.out.println("resultat:" + gv.resolveString("proper${path}ties.tmp"));
-
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-
-    }
   }
 }

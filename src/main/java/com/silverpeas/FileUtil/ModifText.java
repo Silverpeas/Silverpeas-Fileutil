@@ -42,8 +42,9 @@ import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /*import org.apache.xerces.utils.regex.RegularExpression;
-import org.apache.xerces.utils.regex.Match;*/
+ import org.apache.xerces.utils.regex.Match;*/
 
 public class ModifText extends ModifFile {
 
@@ -80,15 +81,13 @@ public class ModifText extends ModifFile {
       if (modifObj instanceof ElementMultiValues) {
         ElementMultiValues emv = ((ElementMultiValues) modifObj);
         Pattern pattern = Pattern.compile(emv.getSearch());
-       /* RegularExpression re = new RegularExpression(emv.getSearch());
-        Match match = new Match();
-        if (re.matches(resStr, match)) {
-         modif = (String) emv.getIterator().next();
-          tmpStr = resStr.substring(0, match.getBeginning(0));
-          tmpStr += modif;
-          tmpStr += resStr.substring(match.getEnd(0));
-          resStr = tmpStr;
-        }*/
+        /*
+         * RegularExpression re = new RegularExpression(emv.getSearch()); Match
+         * match = new Match(); if (re.matches(resStr, match)) { modif =
+         * (String) emv.getIterator().next(); tmpStr = resStr.substring(0,
+         * match.getBeginning(0)); tmpStr += modif; tmpStr +=
+         * resStr.substring(match.getEnd(0)); resStr = tmpStr; }
+         */
         Matcher match = pattern.matcher(resStr);
         if (match.matches()) {
           modif = (String) emv.getIterator().next();
@@ -97,14 +96,15 @@ public class ModifText extends ModifFile {
           tmpStr += resStr.substring(match.end(0));
           resStr = tmpStr;
         }
-      }
-      else {
+      } else {
         ElementModif em = ((ElementModif) modifObj);
-        //remplace uniquement la derniere occurence de chaque ligne
+        // remplace uniquement la derniere occurence de chaque ligne
         res = resStr.lastIndexOf(em.getSearch());
         if (res != -1) {
           modif = em.getModif();
-          tmpStr = new String(resStr.substring(0, res).concat(modif).concat(resStr.substring((res + em.getSearch().length()), resStr.length())));
+          tmpStr = new String(resStr.substring(0, res).concat(modif).concat(
+              resStr
+                  .substring((res + em.getSearch().length()), resStr.length())));
           resStr = tmpStr;
         }
       }
@@ -112,19 +112,18 @@ public class ModifText extends ModifFile {
     try {
       if (tmpStr != null) {
         out.writeBytes(tmpStr);
-      }
-      else {
+      } else {
         out.writeBytes(pBuf);
       }
       out.writeBytes(System.getProperty("line.separator"));
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       System.out.println("probleme d'ecriture est survenue");
     }
   }
 
   /**
-   * lance la modification du fichier Attention la modification s'effectue par ligne du fichier
+   * lance la modification du fichier Attention la modification s'effectue par
+   * ligne du fichier
    */
   public void executeModification() throws Exception {
 
@@ -132,7 +131,8 @@ public class ModifText extends ModifFile {
     DataOutput dataOutput;
     String line;
 
-    File tmpFile = new File(System.getProperty("java.io.tmpdir") + File.separator + "ModifText.sh");
+    File tmpFile = new File(System.getProperty("java.io.tmpdir")
+        + File.separator + "ModifText.sh");
     File inFile = new File(path);
 
     FileInputStream dis = new FileInputStream(path);
@@ -151,7 +151,7 @@ public class ModifText extends ModifFile {
     FileUtil.copyFile(tmpFile, inFile);
     tmpFile.delete();
 
-    //Specifique Linux/Solaris: on met le fichier de script en executable
+    // Specifique Linux/Solaris: on met le fichier de script en executable
     if (path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh")) {
       String[] commande = new String[3];
       commande[0] = "/bin/chmod";
@@ -163,7 +163,7 @@ public class ModifText extends ModifFile {
 
   public static void main(String[] args) {
     ModifText mp;
-    String[] strs = {"comments=ouais", "beanId=12385"};
+    String[] strs = { "comments=ouais", "beanId=12385" };
     System.out.println("test des modification de fichier XML");
     try {
       mp = new ModifText("c:\\toto\\SilverpeasSettings.xml");
@@ -171,9 +171,7 @@ public class ModifText extends ModifFile {
       mp.addModification("%AUTHENTIFICATION%", "c:\toto\titi");
       mp.executeModification();
 
-
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
 
     }

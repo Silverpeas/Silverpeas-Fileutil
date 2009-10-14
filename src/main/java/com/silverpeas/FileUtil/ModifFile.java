@@ -37,13 +37,13 @@ import java.io.File;
 import java.util.*;
 
 public abstract class ModifFile {
-/**
- * Chaine du fichier à modifier
- */
-  protected String path=null;
   /**
-   * tableau des modification à effectuer les objets contenue dans ce tableau sont de type
-   * ElementModif ou ElementMultiValues
+   * Chaine du fichier à modifier
+   */
+  protected String path = null;
+  /**
+   * tableau des modification à effectuer les objets contenue dans ce tableau
+   * sont de type ElementModif ou ElementMultiValues
    */
   protected ArrayList listeModifications;
 
@@ -56,94 +56,95 @@ public abstract class ModifFile {
    * @constructor constructeur de la class
    */
   public ModifFile() {
-	  listeModifications= new ArrayList();
+    listeModifications = new ArrayList();
   }
 
-   /**
+  /**
    * @constructor prend en paramétre le chemin du fichier à modifier
    */
-  public ModifFile(String path) throws Exception{
-	  listeModifications= new ArrayList();
-	  setPath(path);
+  public ModifFile(String path) throws Exception {
+    listeModifications = new ArrayList();
+    setPath(path);
   }
 
-/**
- * met à jour le chemin du fichier à modifier
- */
+  /**
+   * met à jour le chemin du fichier à modifier
+   */
   protected void setPath(String src) throws Exception {
-	File file = new File(src);
-	if (file.exists()!=true){
-	  throw new Exception("Le fichier \""+src+"\" n'existe pas");
-	}else{
-	  path=src;
-	}
+    File file = new File(src);
+    if (file.exists() != true) {
+      throw new Exception("Le fichier \"" + src + "\" n'existe pas");
+    } else {
+      path = src;
+    }
   }
 
-/**
- * copy un fichier passé en paramétre dans le fichier out
- */
+  /**
+   * copy un fichier passé en paramétre dans le fichier out
+   */
   public static void copyFile(File in, File out) throws Exception {
-	byte[] buf = new byte[1024];
-	FileInputStream sIn  = new FileInputStream(in);
-	FileOutputStream sOut = new FileOutputStream(out);
-	int i = 0;
-	while((i=sIn.read(buf))!=-1) {
-			 sOut.write(buf, 0, i);
-	}
-	sIn.close();
-	sOut.close();
-  }
-
-/**
- * ajoute une modification au fichier
- * les paramétres: chaine de recherche, chaine de remplacement
- */
-  public void addModification(String pSearch, String pModif){
-	listeModifications.add(new ElementModif(pSearch,pModif));
-  }
-
-/**
- * ajoute une modification au fichier paramétre: un ElementModif
- */
-  public void addModification(ElementModif em){
-	listeModifications.add(em);
-  }
-
-
-  /**
- * ajoute une modification au fichier paramétre: chaine de type "key=value"
- */
-  public void addModification(String pModif)throws Exception{
-	int index = pModif.lastIndexOf("=");
-	if (index!=-1){
-	  listeModifications.add(new ElementModif(pModif.substring(0,index-1),
-								pModif.substring(index+1,pModif.length())));
-	}else{
-	  throw new Exception("la chaine \""+pModif+"\" n'est pas standard \"key=modif\"");
-	}
+    byte[] buf = new byte[1024];
+    FileInputStream sIn = new FileInputStream(in);
+    FileOutputStream sOut = new FileOutputStream(out);
+    int i = 0;
+    while ((i = sIn.read(buf)) != -1) {
+      sOut.write(buf, 0, i);
+    }
+    sIn.close();
+    sOut.close();
   }
 
   /**
-   * creer une copy de fichier *.bak par defaut (si parametre est à null)
-   *  sinon la valeur du paramétre passé.
+   * ajoute une modification au fichier les paramétres: chaine de recherche,
+   * chaine de remplacement
+   */
+  public void addModification(String pSearch, String pModif) {
+    listeModifications.add(new ElementModif(pSearch, pModif));
+  }
+
+  /**
+   * ajoute une modification au fichier paramétre: un ElementModif
+   */
+  public void addModification(ElementModif em) {
+    listeModifications.add(em);
+  }
+
+  /**
+   * ajoute une modification au fichier paramétre: chaine de type "key=value"
+   */
+  public void addModification(String pModif) throws Exception {
+    int index = pModif.lastIndexOf("=");
+    if (index != -1) {
+      listeModifications.add(new ElementModif(pModif.substring(0, index - 1),
+          pModif.substring(index + 1, pModif.length())));
+    } else {
+      throw new Exception("la chaine \"" + pModif
+          + "\" n'est pas standard \"key=modif\"");
+    }
+  }
+
+  /**
+   * creer une copy de fichier *.bak par defaut (si parametre est à null) sinon
+   * la valeur du paramétre passé.
    */
 
-  public void createFileBak(String str) throws Exception{
-        File file= new File(path);
-        File newFile;
-	if (file.exists() && file.isFile()){
-	  if (str==null){
-		  newFile = new File(path+".bak");
-	  }else{
-		newFile = new File(str);
-	  }
-	  copyFile(file,newFile);
-	}else{
-		throw new Exception("Le fichier :\""+path+"\" n'existe pas ou n'est pas un fichier");
-	}
+  public void createFileBak(String str) throws Exception {
+    File file = new File(path);
+    File newFile;
+    if (file.exists() && file.isFile()) {
+      if (str == null) {
+        newFile = new File(path + ".bak");
+      } else {
+        newFile = new File(str);
+      }
+      copyFile(file, newFile);
+    } else {
+      throw new Exception("Le fichier :\"" + path
+          + "\" n'existe pas ou n'est pas un fichier");
+    }
   }
 
-   /**
+  /**
    * methode abstraite pour la modification du fichier
    */
   protected abstract void executeModification() throws Exception;

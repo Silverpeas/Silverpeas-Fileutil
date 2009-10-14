@@ -32,37 +32,34 @@ package com.silverpeas.FileUtil;
  * @version 1.0
  */
 
-
 import java.util.*;
 
- public class ElementMultiValues extends ElementModif{
-	 /**
-	  * tableau de chaine des valeurs
-	  */
-	 private  ArrayList listeModifications;
+public class ElementMultiValues extends ElementModif {
+  /**
+   * tableau de chaine des valeurs
+   */
+  private ArrayList listeModifications;
 
+  /**
+   * @Constructor : prend en paramétre la chaine de recherche
+   */
+  public ElementMultiValues(String pSearch) {
+    super(pSearch, null);
+    listeModifications = new ArrayList();
+  }
 
-	 /**
-	  * @Constructor : prend en paramétre la chaine de recherche
-	  */
-	  public ElementMultiValues(String pSearch){
-		super(pSearch,null);
-		listeModifications= new ArrayList();
-	  }
+  /**
+   * met à jour le tableau des valeurs
+   */
+  public void addValue(String pValues) {
+    listeModifications.add(pValues);
+  }
 
-	  /**
-	  * met à jour le tableau des valeurs
-	  */
-	  public void addValue(String pValues){
-		 listeModifications.add(pValues);
-	  }
+  /**
+   * @return un objet iterator des valeurs
+   */
+  public Iterator getIterator() {
+    return listeModifications.iterator();
+  }
 
-	  /**
-	  * @return un objet iterator des valeurs
-	  */
-	  public Iterator getIterator(){
-		 return listeModifications.iterator();
-	  }
-
-
-	}
+}
