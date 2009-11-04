@@ -21,23 +21,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*--- formatted by Jindent 2.1, (www.c-lab.de/~jindent) 
- ---*/
 
 package com.silverpeas.FileUtil;
 
-import java.io.*;
-import java.util.Enumeration;
-import java.util.zip.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
-/**
- * @Description :
- * 
- * @Copyright : Copyright (c) 2001
- * @Société : Silverpeas
- * @author STR
- * @version 1.0
- */
 public class ZipUtil {
 
   /**
@@ -61,27 +58,6 @@ public class ZipUtil {
    * @throws IOException
    * @throws IllegalArgumentException
    * @see
-   */
-
-  /*
-   * public static void unzip( File fromZipFile, File toDir ) throws
-   * ZipException, IOException { byte[] buffer = new byte[4096]; int bytes_read;
-   * // check input file if ( !fromZipFile.exists() ) { throw new IOException(
-   * fromZipFile + " does not exist." ); } if ( !fromZipFile.canRead() ) { throw
-   * new IOException( fromZipFile + " read protected." ); } // create directory
-   * if ( !toDir.exists() ) { toDir.mkdirs(); } ZipInputStream in = new
-   * ZipInputStream( new FileInputStream( fromZipFile ) ); ZipEntry entry;
-   * FileOutputStream out; String toName; File fout; while ( ( entry =
-   * in.getNextEntry() ) != null ) { toName = toDir.getAbsolutePath() +
-   * File.separator + entry.getName(); fout = new File( toName ); // if (
-   * fout.exists() ) { // don't overwrite existing files and continue //
-   * System.err.println( "File '" + toName + "' already exisits." ); //
-   * continue; // } if ( entry.isDirectory() ) { // create directory for
-   * directory entries if ( !fout.mkdirs() ) { throw new IOException(
-   * "Unable to create directory: " + toName ); } } else { // write file out =
-   * new FileOutputStream( toName ); while ( ( bytes_read = in.read( buffer ) )
-   * != -1 ) { out.write( buffer, 0, bytes_read ); } out.close(); } }
-   * in.close(); }
    */
   public static void unzip(File fromZipFile, File toDir) throws Exception {
     if (!toDir.exists()) {

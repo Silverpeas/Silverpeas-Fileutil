@@ -23,14 +23,6 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : modification simple Description : Element pour realiser une
- * modification de fichier Copyright : Copyright (c) 2001 Société :
- * 
- * @author Thomas pellegrin
- * @version 1.0
- */
-
 public class ElementModif {
 
   /**
@@ -52,7 +44,7 @@ public class ElementModif {
   }
 
   /**
-   * @return la modification à effectuer
+   * @return la modification ï¿½ effectuer
    */
   public String getModif() {
     return modif;

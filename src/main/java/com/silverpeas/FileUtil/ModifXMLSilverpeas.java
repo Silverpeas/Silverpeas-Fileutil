@@ -23,21 +23,15 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre :
- * Description :
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author thomas pellegrin
- * @version 1.0
- */
-import java.io.*;
-import java.io.Reader.*;
-import java.util.*;
-import org.jdom.*;
-import org.jdom.input.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Iterator;
+import java.util.List;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.*;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 public class ModifXMLSilverpeas extends ModifFile {
 
@@ -52,7 +46,7 @@ public class ModifXMLSilverpeas extends ModifFile {
   }
 
   /**
-   * ajoute une modification au fichier paramétre: un ElementMultiValues
+   * ajoute une modification au fichier paramï¿½tre: un ElementMultiValues
    */
   public void addModification(ElementMultiValues em) throws Exception {
     listeModifications.add(em);
@@ -111,7 +105,7 @@ public class ModifXMLSilverpeas extends ModifFile {
           }
         }
       }
-      // appel récursif , car le noeud courant peut avoir des enfants
+      // appel rï¿½cursif , car le noeud courant peut avoir des enfants
       List chil = currentNode.getChildren();
       if (chil != null) {
         traiteChildren(chil);

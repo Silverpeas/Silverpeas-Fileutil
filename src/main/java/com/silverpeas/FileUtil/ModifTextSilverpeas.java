@@ -23,23 +23,20 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : modification de fichier txt
- * Description :modification de fichier txt propre a silverpeas : remplace la valeur de la cle par la valeur souhaitee
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author STR
- * @version 1.0
- */
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Iterator;
 
-import java.io.*;
-import java.io.Reader.*;
-import java.util.*;
 
 public class ModifTextSilverpeas extends ModifFile {
 
   /**
-   * @constructor prend en paramétre le chemin du fichier à modifier
+   * @constructor prend en paramï¿½tre le chemin du fichier a modifier
    */
   public ModifTextSilverpeas(String path) throws Exception {
     super.setPath(path);
@@ -70,13 +67,6 @@ public class ModifTextSilverpeas extends ModifFile {
       // if (tmpStr.startsWith(em.getSearch())){
       if ((egal != -1)
           && (tmpStr.substring(0, egal).trim().equalsIgnoreCase(em.getSearch()))) {
-
-        // ici nouveauté t003 : avant, la substitution n'était pas opérée si
-        // valeur avant était vide :
-        // if ((egal!=-1) && (egal+1!=tmpStr.length()) &&
-        // (!tmpStr.substring(egal+1,
-        // tmpStr.length()).trim().equalsIgnoreCase(em.getModif())) ) {
-        // maintenant, on opère même si val d'origine est vide
         if ((egal != -1)
             && (!tmpStr.substring(egal + 1, tmpStr.length()).trim()
                 .equalsIgnoreCase(em.getModif()))) {
@@ -102,6 +92,7 @@ public class ModifTextSilverpeas extends ModifFile {
    * lance la modification du fichier Attention la modification s'effectue par
    * ligne du fichier
    */
+  @Override
   public void executeModification() throws Exception {
 
     DataInput dataInput;
@@ -137,19 +128,4 @@ public class ModifTextSilverpeas extends ModifFile {
       Runtime.getRuntime().exec(commande);
     }
   }
-
-  /*
-   * public static void main(String[] args){ ModifText mp ; String[] strs =
-   * {"comments=ouais","beanId=12385"};
-   * System.out.println("test des modification de fichier XML"); try{ mp = new
-   * ModifText("c:\\toto\\SilverpeasSettings.xml"); mp.createFileBak(null);
-   * mp.addModification("%AUTHENTIFICATION%","c:\toto\titi");
-   * mp.executeModification();
-   * 
-   * 
-   * }catch(Exception e){ e.printStackTrace();
-   * 
-   * } }
-   */
-
 }

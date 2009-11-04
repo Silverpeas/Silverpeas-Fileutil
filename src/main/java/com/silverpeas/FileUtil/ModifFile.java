@@ -23,30 +23,22 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : gestion de fichier
- * Description : class abstraite pour la gestion de fichier
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author Thomas pellegrin
- * @version 1.0
- */
-
-import java.io.*;
 import java.io.File;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 public abstract class ModifFile {
+
   /**
-   * Chaine du fichier à modifier
+   * Chaine du fichier a modifier
    */
   protected String path = null;
   /**
-   * tableau des modification à effectuer les objets contenue dans ce tableau
+   * tableau des modification a effectuer les objets contenue dans ce tableau
    * sont de type ElementModif ou ElementMultiValues
    */
   protected ArrayList listeModifications;
-
   /**
    * isModified indique si le fichier a ete modifie
    */
@@ -60,7 +52,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * @constructor prend en paramétre le chemin du fichier à modifier
+   * @constructor prend en paramï¿½tre le chemin du fichier a modifier
    */
   public ModifFile(String path) throws Exception {
     listeModifications = new ArrayList();
@@ -68,7 +60,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * met à jour le chemin du fichier à modifier
+   * met a jour le chemin du fichier a modifier
    */
   protected void setPath(String src) throws Exception {
     File file = new File(src);
@@ -80,7 +72,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * copy un fichier passé en paramétre dans le fichier out
+   * copy un fichier passe en parametre dans le fichier out
    */
   public static void copyFile(File in, File out) throws Exception {
     byte[] buf = new byte[1024];
@@ -95,7 +87,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * ajoute une modification au fichier les paramétres: chaine de recherche,
+   * ajoute une modification au fichier les parametres: chaine de recherche,
    * chaine de remplacement
    */
   public void addModification(String pSearch, String pModif) {
@@ -103,14 +95,14 @@ public abstract class ModifFile {
   }
 
   /**
-   * ajoute une modification au fichier paramétre: un ElementModif
+   * ajoute une modification au fichier parametre: un ElementModif
    */
   public void addModification(ElementModif em) {
     listeModifications.add(em);
   }
 
   /**
-   * ajoute une modification au fichier paramétre: chaine de type "key=value"
+   * ajoute une modification au fichier parametre: chaine de type "key=value"
    */
   public void addModification(String pModif) throws Exception {
     int index = pModif.lastIndexOf("=");
@@ -124,10 +116,9 @@ public abstract class ModifFile {
   }
 
   /**
-   * creer une copy de fichier *.bak par defaut (si parametre est à null) sinon
-   * la valeur du paramétre passé.
+   * creer une copy de fichier *.bak par defaut (si parametre est a null) sinon
+   * la valeur du parametre passe.
    */
-
   public void createFileBak(String str) throws Exception {
     File file = new File(path);
     File newFile;
@@ -148,5 +139,4 @@ public abstract class ModifFile {
    * methode abstraite pour la modification du fichier
    */
   protected abstract void executeModification() throws Exception;
-
 }

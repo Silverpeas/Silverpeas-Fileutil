@@ -23,41 +23,35 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : Modification de fichier properties
- * Description : modifi des fichiers properties
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author thomas pellegrin
- * @version 1.0
- */
-
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Iterator;
+import java.util.Properties;
 
 public class ModifProperties extends ModifFile {
 
   /**
-   * message de la nouvelle mise à jour du fichier
+   * message de la nouvelle mise a jour du fichier
    */
   private String messageProperties = null;
 
   /**
-   * @constructor prend en paramétre le fichier à modifier
+   * @constructor prend en parametre le fichier a modifier
    */
   public ModifProperties(String path) throws Exception {
     this.setPath(path);
   }
 
   /**
-   * met à jour le message d'information du propertie
+   * met a jour le message d'information du propertie
    */
   public void setMessageProperties(String str) {
     messageProperties = str;
   }
 
   /**
-   * @return le message de mise à jour du properties
+   * @return le message de mise a jour du properties
    */
   public String getMessageProperties() {
     return messageProperties;
@@ -66,6 +60,7 @@ public class ModifProperties extends ModifFile {
   /**
    * lance la modification du fichier properties
    */
+  @Override
   public void executeModification() throws Exception {
     FileInputStream inputFile;
     FileOutputStream outputFile;

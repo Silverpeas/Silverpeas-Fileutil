@@ -23,16 +23,8 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : Element de modification
- * Description : Element de modification à plusieurs valeurs
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author Thomas pellegrin
- * @version 1.0
- */
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ElementMultiValues extends ElementModif {
   /**
@@ -41,7 +33,7 @@ public class ElementMultiValues extends ElementModif {
   private ArrayList listeModifications;
 
   /**
-   * @Constructor : prend en paramétre la chaine de recherche
+   * @Constructor : prend en parametre la chaine de recherche
    */
   public ElementMultiValues(String pSearch) {
     super(pSearch, null);
@@ -49,7 +41,7 @@ public class ElementMultiValues extends ElementModif {
   }
 
   /**
-   * met à jour le tableau des valeurs
+   * met a jour le tableau des valeurs
    */
   public void addValue(String pValues) {
     listeModifications.add(pValues);

@@ -23,14 +23,6 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : gestion de variable
- * Description : gestion de variable et de resolution de string.
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author Thomas pellegrin
- * @version 1.0
- */
 import bsh.Interpreter;
 import java.util.Hashtable;
 import java.util.Map.Entry;
@@ -62,7 +54,7 @@ public class GestionVariables {
   }
 
   /**
-   * modification d'une variable déja existante
+   * modification d'une variable deja existante
    */
   public void modifyVariable(String pName, String pValue) {
     listeVariables.remove(pName);
@@ -70,8 +62,8 @@ public class GestionVariables {
   }
 
   /**
-   * resolution de string les variables doivent être de la forme ${variable} il
-   * n'y a pas de contrainte aux niveaux du nombre de variables utilisées ex:
+   * resolution de string les variables doivent etre de la forme ${variable} il
+   * n'y a pas de contrainte aux niveaux du nombre de variables utilisï¿½es ex:
    * path=c:\tmp rep=\lib\ ${path}{$rep}\toto ->c:\tmp\lib\toto
    */
   public String resolveString(String pStr) throws Exception {
@@ -98,7 +90,7 @@ public class GestionVariables {
   }
 
   /**
-   * résolution des variables d'une string puis evaluation dynamique d'une
+   * resolution des variables d'une string puis evaluation dynamique d'une
    * string de la forme $eval{{.....}}
    */
   public String resolveAndEvalString(String pStr) throws Exception {
@@ -122,7 +114,7 @@ public class GestionVariables {
       resolvedString = resolvedString.substring(7);
       resolvedString = resolveString(resolvedString);
 
-      // évaluation dynamique
+      // evaluation dynamique
       Interpreter bsh = new bsh.Interpreter();
       bsh.set("value", new String());
       bsh.eval(resolvedString);

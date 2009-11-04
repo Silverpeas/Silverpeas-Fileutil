@@ -24,16 +24,8 @@
 package com.silverpeas.FileUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
 
-/**
- * @Description :
- * 
- * @Copyright : Copyright (c) 2001
- * @Société : Silverpeas
- * @author STR
- * @version 1.0
- */
 public class BackupFile {
   private static final String EXT = ".bak~";
   private File file = null;
@@ -43,13 +35,6 @@ public class BackupFile {
   private int nbFileBackup = 0;
   private int lastNumFileBackup = 0;
 
-  // ---------------------------------------------------------------------
-
-  /**
-   * 
-   * @param pathname
-   * @see
-   */
   public BackupFile(File pathname) throws Exception {
     file = pathname;
     if (!file.exists()) {
@@ -58,49 +43,19 @@ public class BackupFile {
     refresh();
   }
 
-  // ---------------------------------------------------------------------
-
-  /**
-   * @throws Exception
-   * @see
-   */
   public void makeBackup() throws Exception {
-    // refresh();
-    // FileUtil.copyFile( file, new File( file + EXT + ( lastNumFileBackup + 1 )
-    // ) );
-    // refresh();
   }
 
-  // ---------------------------------------------------------------------
-
-  /**
-   * @throws Exception
-   * @see
-   */
   private void refresh() throws Exception {
     setList();
     setFirst();
     setLast();
   }
 
-  // ---------------------------------------------------------------------
-
-  /**
-   * @return
-   * @throws Exception
-   * @see
-   */
   public File[] getListBackup() throws Exception {
     return listFileBackup;
   }
 
-  // ---------------------------------------------------------------------
-
-  /**
-   * @return
-   * @throws Exception
-   * @see
-   */
   public File getFirstBackup() throws Exception {
     return firstFileBackup;
   }

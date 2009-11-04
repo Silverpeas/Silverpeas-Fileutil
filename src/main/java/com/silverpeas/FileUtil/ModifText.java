@@ -23,15 +23,6 @@
  */
 package com.silverpeas.FileUtil;
 
-/**
- * Titre : modification de fichier txt
- * Description :modification de fichier txt ou n'importe qu elle extention il s'agit simplement de remplacement de chaine
- * Copyright :    Copyright (c) 2001
- * Société :
- * @author thomas pellegrin
- * @version 1.0
- */
-
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -43,13 +34,11 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/*import org.apache.xerces.utils.regex.RegularExpression;
- import org.apache.xerces.utils.regex.Match;*/
 
 public class ModifText extends ModifFile {
 
   /**
-   * @constructor prend en paramétre le chemin du fichier à modifier
+   * @constructor prend en paramï¿½tre le chemin du fichier a modifier
    */
   public ModifText(String path) throws Exception {
     super.setPath(path);
@@ -81,13 +70,6 @@ public class ModifText extends ModifFile {
       if (modifObj instanceof ElementMultiValues) {
         ElementMultiValues emv = ((ElementMultiValues) modifObj);
         Pattern pattern = Pattern.compile(emv.getSearch());
-        /*
-         * RegularExpression re = new RegularExpression(emv.getSearch()); Match
-         * match = new Match(); if (re.matches(resStr, match)) { modif =
-         * (String) emv.getIterator().next(); tmpStr = resStr.substring(0,
-         * match.getBeginning(0)); tmpStr += modif; tmpStr +=
-         * resStr.substring(match.getEnd(0)); resStr = tmpStr; }
-         */
         Matcher match = pattern.matcher(resStr);
         if (match.matches()) {
           modif = (String) emv.getIterator().next();
@@ -125,6 +107,7 @@ public class ModifText extends ModifFile {
    * lance la modification du fichier Attention la modification s'effectue par
    * ligne du fichier
    */
+  @Override
   public void executeModification() throws Exception {
 
     DataInput dataInput;

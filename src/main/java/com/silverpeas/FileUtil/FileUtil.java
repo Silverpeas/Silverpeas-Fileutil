@@ -21,28 +21,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*--- formatted by Jindent 2.1, (www.c-lab.de/~jindent) 
- ---*/
 
 package com.silverpeas.FileUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-/**
- * @Description :
- * 
- * @Copyright : Copyright (c) 2001
- * @Société : Silverpeas
- * @author STR
- * @version 1.0
- */
 public class FileUtil {
 
-  /**
-   * ---------------------------------------------------------------------
-   * 
-   * @see
-   */
   private FileUtil() {
   }
 
@@ -193,15 +183,8 @@ public class FileUtil {
     }
   }
 
-  /**
-   * ---------------------------------------------------------------------
-   * 
-   * @param _file
-   * @see
-   */
   public static void deleteFiles(String _file) {
-
-    // suppression récursive des fils
+    // Deleting the children recursively
     File file = new File(_file);
     String[] childs = file.list();
     if (childs != null) {
@@ -209,22 +192,12 @@ public class FileUtil {
         deleteFiles(_file + File.separator + childs[i]);
       }
     }
-
-    // suppression de la racine
     file.delete();
   }
 
-  /**
-   * ---------------------------------------------------------------------
-   * 
-   * @param _file
-   * @see
-   */
   public static void deleteFilesOnExit(String _file) {
-
-    // suppression récursive des fils
+    // Deleting the children recursively
     File file = new File(_file);
-    // suppression de la racine
     file.deleteOnExit();
     String[] childs = file.list();
     if (childs != null) {
@@ -232,7 +205,5 @@ public class FileUtil {
         deleteFiles(_file + File.separator + childs[i]);
       }
     }
-
   }
-
 }
