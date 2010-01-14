@@ -39,7 +39,6 @@ public class ZipUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param fromFile
    * @param toDir
    * @throws IOException
@@ -52,7 +51,6 @@ public class ZipUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param from
    * @param to
    * @throws IOException
@@ -75,7 +73,6 @@ public class ZipUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param fromZipFile
    * @param fileName
    * @param toDir
@@ -100,7 +97,6 @@ public class ZipUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param zipFile
    * @param zipEntry
    * @param toDir

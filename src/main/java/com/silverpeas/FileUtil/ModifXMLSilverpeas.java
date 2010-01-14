@@ -127,8 +127,7 @@ public class ModifXMLSilverpeas extends ModifFile {
     format.setIndent("\t");
     format.setTextMode(Format.TextMode.TRIM);
     /*
-     * XMLOutputter serializer = new XMLOutputter("\t",true);
-     * serializer.setTrimText(true);
+     * XMLOutputter serializer = new XMLOutputter("\t",true); serializer.setTrimText(true);
      */
     XMLOutputter serializer = new XMLOutputter(format);
     serializer.output(doc, out);

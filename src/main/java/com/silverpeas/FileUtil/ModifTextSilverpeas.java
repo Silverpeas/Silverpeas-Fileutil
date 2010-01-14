@@ -32,7 +32,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 
-
 public class ModifTextSilverpeas extends ModifFile {
 
   /**
@@ -69,7 +68,7 @@ public class ModifTextSilverpeas extends ModifFile {
           && (tmpStr.substring(0, egal).trim().equalsIgnoreCase(em.getSearch()))) {
         if ((egal != -1)
             && (!tmpStr.substring(egal + 1, tmpStr.length()).trim()
-                .equalsIgnoreCase(em.getModif()))) {
+            .equalsIgnoreCase(em.getModif()))) {
 
           if (!isModified) {
             isModified = true;
@@ -89,8 +88,7 @@ public class ModifTextSilverpeas extends ModifFile {
   }
 
   /**
-   * lance la modification du fichier Attention la modification s'effectue par
-   * ligne du fichier
+   * lance la modification du fichier Attention la modification s'effectue par ligne du fichier
    */
   @Override
   public void executeModification() throws Exception {

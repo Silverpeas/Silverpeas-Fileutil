@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class ModifText extends ModifFile {
 
   /**
@@ -86,7 +85,7 @@ public class ModifText extends ModifFile {
           modif = em.getModif();
           tmpStr = new String(resStr.substring(0, res).concat(modif).concat(
               resStr
-                  .substring((res + em.getSearch().length()), resStr.length())));
+              .substring((res + em.getSearch().length()), resStr.length())));
           resStr = tmpStr;
         }
       }
@@ -104,8 +103,7 @@ public class ModifText extends ModifFile {
   }
 
   /**
-   * lance la modification du fichier Attention la modification s'effectue par
-   * ligne du fichier
+   * lance la modification du fichier Attention la modification s'effectue par ligne du fichier
    */
   @Override
   public void executeModification() throws Exception {

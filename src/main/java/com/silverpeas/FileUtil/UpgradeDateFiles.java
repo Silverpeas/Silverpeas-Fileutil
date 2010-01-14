@@ -36,7 +36,6 @@ public class UpgradeDateFiles {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @see
    */
   public UpgradeDateFiles() throws Exception {
@@ -46,8 +45,8 @@ public class UpgradeDateFiles {
   }
 
   /**
-   * met a jour la valeur de la date de mise a jour a l'aide de la string passee
-   * en parametre (ex: 10/10/2001/22:12).
+   * met a jour la valeur de la date de mise a jour a l'aide de la string passee en parametre (ex:
+   * 10/10/2001/22:12).
    */
   public void setUpgradeDate(String pDate) throws Exception {
     SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy/hh:mm");
@@ -63,8 +62,7 @@ public class UpgradeDateFiles {
   }
 
   /**
-   * fonction : qui met a jour tous les fichiers et repertoire du repertoire
-   * passer en parametre
+   * fonction : qui met a jour tous les fichiers et repertoire du repertoire passer en parametre
    */
   private void majDirectory(File pRep) throws Exception {
     File[] listFiles;
@@ -87,8 +85,7 @@ public class UpgradeDateFiles {
   }
 
   /**
-   * methode pour la mise a jour de toute l'arborescence a partir du chemin
-   * donne en parametre
+   * methode pour la mise a jour de toute l'arborescence a partir du chemin donne en parametre
    */
   public void upgradeFiles(String pPathName) throws Exception {
     File tmpFile;
@@ -103,7 +100,7 @@ public class UpgradeDateFiles {
     } catch (Exception ex) {
       throw new Exception(
           "Un problème est apparue lors de la mise à jour d'un fichier nb:"
-              + nbRepertoires + ex);
+          + nbRepertoires + ex);
     }
   }
 }

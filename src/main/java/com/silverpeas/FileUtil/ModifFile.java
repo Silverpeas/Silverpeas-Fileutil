@@ -35,8 +35,8 @@ public abstract class ModifFile {
    */
   protected String path = null;
   /**
-   * tableau des modification a effectuer les objets contenue dans ce tableau
-   * sont de type ElementModif ou ElementMultiValues
+   * tableau des modification a effectuer les objets contenue dans ce tableau sont de type
+   * ElementModif ou ElementMultiValues
    */
   protected ArrayList listeModifications;
   /**
@@ -87,8 +87,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * ajoute une modification au fichier les parametres: chaine de recherche,
-   * chaine de remplacement
+   * ajoute une modification au fichier les parametres: chaine de recherche, chaine de remplacement
    */
   public void addModification(String pSearch, String pModif) {
     listeModifications.add(new ElementModif(pSearch, pModif));
@@ -116,8 +115,8 @@ public abstract class ModifFile {
   }
 
   /**
-   * creer une copy de fichier *.bak par defaut (si parametre est a null) sinon
-   * la valeur du parametre passe.
+   * creer une copy de fichier *.bak par defaut (si parametre est a null) sinon la valeur du
+   * parametre passe.
    */
   public void createFileBak(String str) throws Exception {
     File file = new File(path);

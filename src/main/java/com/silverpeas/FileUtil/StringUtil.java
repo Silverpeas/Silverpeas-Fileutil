@@ -28,18 +28,12 @@ public class StringUtil {
   public static final int RECURSION_THRESHOLD = 10;
 
   /**
-   * Search a string for all instances of a substring and replace it with
-   * another string. Amazing that this is not a method of java.lang.String since
-   * I use it all the time.
-   * 
-   * @param search
-   *          Substring to search for
-   * @param replace
-   *          String to replace it with
-   * @param source
-   *          String to search through
-   * @return The source with all instances of <code>search</code> replaced by
-   *         <code>replace</code>
+   * Search a string for all instances of a substring and replace it with another string. Amazing
+   * that this is not a method of java.lang.String since I use it all the time.
+   * @param search Substring to search for
+   * @param replace String to replace it with
+   * @param source String to search through
+   * @return The source with all instances of <code>search</code> replaced by <code>replace</code>
    */
   public static String sReplace(String search, String replace, String source) {
 
@@ -75,14 +69,10 @@ public class StringUtil {
   }
 
   /**
-   * Match a file glob style expression without ranges. '*' matches zero or more
-   * chars. '?' matches any single char.
-   * 
-   * @param pattern
-   *          A glob-style pattern to match
-   * @param input
-   *          The string to match
-   * 
+   * Match a file glob style expression without ranges. '*' matches zero or more chars. '?' matches
+   * any single char.
+   * @param pattern A glob-style pattern to match
+   * @param input The string to match
    * @return whether or not the string matches the pattern.
    */
   public static boolean match(String pattern, String input) {
@@ -136,8 +126,8 @@ public class StringUtil {
   }
 
   /**
-   * This looks up {% %} delimted keys in a string and replaces them. This is
-   * used by resource catalog, TreeConfig, and several other components.
+   * This looks up {% %} delimted keys in a string and replaces them. This is used by resource
+   * catalog, TreeConfig, and several other components.
    */
   public static String lookupKeysInString(String str, KeyFinder finder) {
     return lookupKeysInString(str, 0, finder);

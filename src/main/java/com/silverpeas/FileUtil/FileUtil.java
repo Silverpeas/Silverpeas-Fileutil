@@ -77,7 +77,6 @@ public class FileUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param from
    * @param to
    * @throws IOException
@@ -89,11 +88,9 @@ public class FileUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param from
    * @param to
-   * @throws IOException
-   *           if from doesn't exist
+   * @throws IOException if from doesn't exist
    * @see
    */
   public static void copyDir(File from, File to) throws IOException {
@@ -122,7 +119,6 @@ public class FileUtil {
 
   /**
    * ---------------------------------------------------------------------
-   * 
    * @param file
    * @param c
    * @return
@@ -153,8 +149,8 @@ public class FileUtil {
   }
 
   /**
-   * Utility method to get extension of a file return empty String if @file
-   * doesn't exist or if @file doesn't have extension
+   * Utility method to get extension of a file return empty String if @file doesn't exist or if @file
+   * doesn't have extension
    */
   public static String getExtension(File file) throws IOException {
     if (!file.isFile()) {
@@ -171,8 +167,7 @@ public class FileUtil {
   }
 
   /**
-   * Utility method to get extension of a file return empty String if @file
-   * doesn't have extension
+   * Utility method to get extension of a file return empty String if @file doesn't have extension
    */
   public static String getExtension(String file) throws IOException {
     int i = file.lastIndexOf(".");
