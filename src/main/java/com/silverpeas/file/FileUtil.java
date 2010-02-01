@@ -21,20 +21,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.silverpeas.FileUtil;
+package com.silverpeas.file;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import org.apache.commons.io.FileUtils;
 
 /**
  * TODO : replace with commons-io
  * @author ehugonnet
  */
-public class FileUtil {
+public final class FileUtil {
 
   private FileUtil() {
   }
@@ -66,15 +66,7 @@ public class FileUtil {
       throw new IOException("Cannot write to file '" + toDir + "'.");
     }
     toDir.getParentFile().mkdirs();
-    final int fileSize = (int) from.length();
-    byte[] data = new byte[fileSize];
-    FileInputStream in = new FileInputStream(from);
-    in.read(data);
-    FileOutputStream out = new FileOutputStream(toDir);
-    out.write(data);
-    in.close();
-    out.close();
-    data = null;
+    FileUtils.copyFile(from, toDir);
   }
 
   /**
@@ -84,8 +76,8 @@ public class FileUtil {
    * @throws IOException
    * @see
    */
-  public static void copyDir(String from, String to) throws IOException {
-    copyDir(new File(from), new File(to));
+  public static void copyDir(final String fromDir, final String toDir) throws IOException {
+    copyDir(new File(fromDir), new File(toDir));
   }
 
   /**
@@ -95,28 +87,19 @@ public class FileUtil {
    * @throws IOException if from doesn't exist
    * @see
    */
-  public static void copyDir(File from, File to) throws IOException {
-    if (!from.exists()) {
-      throw new IOException("Cannot found file or directory \"" + from + "\".");
+  public static void copyDir(final File fromDir, final File toDir) throws IOException {
+    if (!fromDir.exists()) {
+      throw new IOException("Cannot found file or directory \"" + fromDir + "\".");
     }
-    if (from.isFile()) {
-      copyFile(from, to);
+    if (fromDir.isFile()) {
+      copyFile(fromDir, toDir);
     } else {
-      if (to.isFile()) {
-        throw new IOException("cannot copy directory \"" + from
-            + "\" into the file" + to + "\".");
+      if (toDir.isFile()) {
+        throw new IOException("cannot copy directory \"" + fromDir
+            + "\" into the file" + toDir + "\".");
       }
-      to.mkdirs();
-      String[] childs = from.list();
-      if (childs != null) {
-        for (int i = 0; i < childs.length; i++) {
-          File childFrom = new File(from.getAbsolutePath() + File.separator
-              + childs[i]);
-          File childTo = new File(to.getAbsolutePath() + File.separator
-              + childs[i]);
-          copyDir(childFrom, childTo);
-        }
-      }
+      toDir.mkdirs();
+      FileUtils.copyDirectory(fromDir, toDir);
     }
   }
 
@@ -130,78 +113,57 @@ public class FileUtil {
    */
   public static InputStream getInputStream(File file, Class c)
       throws FileNotFoundException {
-    InputStream rtn;
-    String s;
+    InputStream rtn = null;
     if (file != null) {
       try {
-        return new FileInputStream(file);
-      } catch (FileNotFoundException e) {
-        s = file.toString();
+        rtn = new FileInputStream(file);
+      } catch (FileNotFoundException fnfex) {
+        String s = file.toString();
         int i = s.indexOf(File.separator);
         if (i >= 0) {
           s = s.substring(i);
           s = StringUtil.sReplace("\\", "/", s);
-          if ((rtn = c.getResourceAsStream(s)) != null) {
-            return rtn;
-          }
+          rtn = c.getResourceAsStream(s);
         }
-        throw e;
+        throw fnfex;
       }
     }
-    return null;
+    return rtn;
   }
 
   /**
    * Utility method to get extension of a file return empty String if @file doesn't exist or if @file
    * doesn't have extension
    */
-  public static String getExtension(File file) throws IOException {
-    if (!file.isFile()) {
-      return "";
-    } else {
-      String name = file.getName();
-      int i = name.lastIndexOf(".");
-      if (i == -1) {
-        return "";
-      } else {
-        return name.substring(i + 1, name.length());
-      }
+  public static String getExtension(final File file) throws IOException {
+    String extension = "";
+    if (file.isFile()) {
+      extension = getExtension(file.getName());
     }
+    return extension;
   }
 
   /**
    * Utility method to get extension of a file return empty String if @file doesn't have extension
    */
-  public static String getExtension(String file) throws IOException {
-    int i = file.lastIndexOf(".");
-    if (i == -1) {
-      return "";
-    } else {
-      return file.substring(i + 1, file.length());
+  public static String getExtension(final String file) throws IOException {
+    String extension = "";
+    final int index = file.lastIndexOf('.');
+    if (index >= 0) {
+      extension = file.substring(index + 1, file.length());
     }
+    return extension;
   }
 
-  public static void deleteFiles(String _file) {
+  public static void deleteFiles(final String _file) throws IOException {
     // Deleting the children recursively
-    File file = new File(_file);
-    String[] childs = file.list();
-    if (childs != null) {
-      for (int i = 0; i < childs.length; i++) {
-        deleteFiles(_file + File.separator + childs[i]);
-      }
-    }
-    file.delete();
+    final File file = new File(_file);
+    FileUtils.forceDelete(file);
   }
 
-  public static void deleteFilesOnExit(String _file) {
+  public static void deleteFilesOnExit(final String _file) throws IOException {
     // Deleting the children recursively
-    File file = new File(_file);
-    file.deleteOnExit();
-    String[] childs = file.list();
-    if (childs != null) {
-      for (int i = 0; i < childs.length; i++) {
-        deleteFiles(_file + File.separator + childs[i]);
-      }
-    }
+    final File file = new File(_file);
+    FileUtils.forceDeleteOnExit(file);
   }
 }
