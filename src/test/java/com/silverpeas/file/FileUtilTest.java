@@ -21,7 +21,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.silverpeas.FileUtil;
+package com.silverpeas.file;
 
 import org.junit.After;
 import org.junit.AfterClass;
