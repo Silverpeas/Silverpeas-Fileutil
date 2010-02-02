@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * TODO : replace with commons-io
@@ -147,12 +148,7 @@ public final class FileUtil {
    * Utility method to get extension of a file return empty String if @file doesn't have extension
    */
   public static String getExtension(final String file) throws IOException {
-    String extension = "";
-    final int index = file.lastIndexOf('.');
-    if (index >= 0) {
-      extension = file.substring(index + 1, file.length());
-    }
-    return extension;
+    return FilenameUtils.getExtension(file);
   }
 
   public static void deleteFiles(final String _file) throws IOException {

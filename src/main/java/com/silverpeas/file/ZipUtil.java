@@ -21,21 +21,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.silverpeas.file;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
-public class ZipUtil {
+public final class ZipUtil {
 
   /**
    * ---------------------------------------------------------------------
@@ -45,7 +43,7 @@ public class ZipUtil {
    * @throws ZipException
    * @see
    */
-  public static void unzip(String fromFile, String toDir) throws Exception {
+  public static void unzip(final String fromFile, final String toDir) throws IOException {
     unzip(new File(fromFile), new File(toDir));
   }
 
@@ -57,18 +55,25 @@ public class ZipUtil {
    * @throws IllegalArgumentException
    * @see
    */
-  public static void unzip(File fromZipFile, File toDir) throws Exception {
+  public static void unzip(final File fromZipFile, final File toDir) throws IOException {
     if (!toDir.exists()) {
       toDir.mkdirs();
     }
-    ZipFile zipFile = new ZipFile(fromZipFile);
-    ZipInputStream in = new ZipInputStream(new FileInputStream(fromZipFile));
-    ZipEntry entry;
-    while ((entry = in.getNextEntry()) != null) {
-      extractFile(zipFile, entry, toDir);
+    final ZipFile zipFile = new ZipFile(fromZipFile);
+    ZipInputStream zipInput = null;
+    try {
+      zipInput = new ZipInputStream(new FileInputStream(fromZipFile));
+      ZipEntry entry;
+      while ((entry = zipInput.getNextEntry()) != null) {
+        extractFile(zipFile, entry, toDir);
+        zipInput.closeEntry();
+      }
+    } finally {
+      if (zipInput != null) {
+        IOUtils.closeQuietly(zipInput);
+      }
+      zipFile.close();
     }
-    in.close();
-    zipFile.close();
   }
 
   /**
@@ -103,22 +108,16 @@ public class ZipUtil {
    * @throws Exception
    * @see
    */
-  private static void extractFile(ZipFile zipFile, ZipEntry zipEntry, File toDir)
-      throws Exception {
-    byte[] data = new byte[(int) zipEntry.getSize()];
-    DataInputStream in = new DataInputStream(zipFile.getInputStream(zipEntry));
-    in.readFully(data);
-    File toFile = new File(toDir.getAbsolutePath() + File.separator
-        + zipEntry.getName());
+  private static void extractFile(final ZipFile zipFile, final ZipEntry zipEntry, final File toDir)
+      throws IOException {
+    final File toFile = new File(toDir.getAbsolutePath(), zipEntry.getName());
     if (zipEntry.isDirectory()) {
-      toFile.mkdirs();
+      FileUtils.forceMkdir(toFile);
     } else if (!toFile.exists()) {
       toFile.getParentFile().mkdirs();
-      DataOutputStream out = new DataOutputStream(new FileOutputStream(toFile));
-      out.write(data);
+      final OutputStream out = FileUtils.openOutputStream(toFile);
+      IOUtils.copy(zipFile.getInputStream(zipEntry), out);
       out.close();
     }
-    in.close();
   }
-
 }
