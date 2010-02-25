@@ -36,16 +36,15 @@ public class StringUtil {
    * @return The source with all instances of <code>search</code> replaced by <code>replace</code>
    */
   public static String sReplace(String search, String replace, String source) {
-
-    int spot;
     String returnString;
     String origSource = new String(source);
 
-    spot = source.indexOf(search);
-    if (spot > -1)
+    int spot = source.indexOf(search);
+    if (spot > -1) {
       returnString = "";
-    else
+    } else {
       returnString = source;
+    }
     while (spot > -1) {
       if (spot == source.length() + 1) {
         returnString = returnString.concat(source.substring(0,
@@ -156,7 +155,7 @@ public class StringUtil {
         // we got a potential key
 
         int endkey = -1;
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
         for (int j = i + 2; j + 1 < len && endkey < 0; j++) {
           if (sb[j] == '%' && sb[j + 1] == '}') {
             endkey = j - 1;

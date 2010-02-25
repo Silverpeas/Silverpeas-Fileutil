@@ -38,7 +38,7 @@ public abstract class ModifFile {
    * tableau des modification a effectuer les objets contenue dans ce tableau sont de type
    * ElementModif ou ElementMultiValues
    */
-  protected ArrayList listeModifications;
+  protected ArrayList<ElementModif> listeModifications;
   /**
    * isModified indique si le fichier a ete modifie
    */
@@ -52,7 +52,7 @@ public abstract class ModifFile {
   }
 
   /**
-   * @constructor prend en param�tre le chemin du fichier a modifier
+   * @constructor prend en parametre le chemin du fichier a modifier
    */
   public ModifFile(String path) throws Exception {
     listeModifications = new ArrayList();
@@ -62,7 +62,7 @@ public abstract class ModifFile {
   /**
    * met a jour le chemin du fichier a modifier
    */
-  protected void setPath(String src) throws Exception {
+  protected final void setPath(String src) throws Exception {
     File file = new File(src);
     if (file.exists() != true) {
       throw new Exception("Le fichier \"" + src + "\" n'existe pas");

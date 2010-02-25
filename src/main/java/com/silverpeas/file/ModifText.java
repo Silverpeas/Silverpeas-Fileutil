@@ -23,16 +23,12 @@
  */
 package com.silverpeas.file;
 
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.io.FileUtils;
 
 public class ModifText extends ModifFile {
 
@@ -55,51 +51,37 @@ public class ModifText extends ModifFile {
   /**
    * analyse une ligne du fichier
    */
-  protected void analyseLigne(DataOutput out, String pBuf) {
+  protected String analyseLigne(String line) {
+    String tmpLine = line;
+    for (ElementModif modif : listeModifications) {
+      tmpLine = analyseLine(tmpLine, modif);
+    }
+    if ("".equals(tmpLine)) {
+      tmpLine = line;
+    }
+    return tmpLine;
+  }
 
-    String resStr = pBuf;
-    String tmpStr = null;
-    String modif = null;
-
-    int index, res;
-    Iterator im = listeModifications.iterator();
-
-    while (im.hasNext()) {
-      Object modifObj = im.next();
-      if (modifObj instanceof ElementMultiValues) {
-        ElementMultiValues emv = ((ElementMultiValues) modifObj);
-        Pattern pattern = Pattern.compile(emv.getSearch());
-        Matcher match = pattern.matcher(resStr);
-        if (match.matches()) {
-          modif = (String) emv.getIterator().next();
-          tmpStr = resStr.substring(0, match.start(0));
-          tmpStr += modif;
-          tmpStr += resStr.substring(match.end(0));
-          resStr = tmpStr;
-        }
-      } else {
-        ElementModif em = ((ElementModif) modifObj);
-        // remplace uniquement la derniere occurence de chaque ligne
-        res = resStr.lastIndexOf(em.getSearch());
-        if (res != -1) {
-          modif = em.getModif();
-          tmpStr = new String(resStr.substring(0, res).concat(modif).concat(
-              resStr
-              .substring((res + em.getSearch().length()), resStr.length())));
-          resStr = tmpStr;
-        }
+  protected String analyseLine(String line, ElementModif modification) {
+    StringBuffer resStr = new StringBuffer();
+    if (modification instanceof RegexpElementMotif) {
+      RegexpElementMotif emv = (RegexpElementMotif) modification;
+      Pattern pattern = emv.getPattern();
+      Matcher match = pattern.matcher(line);
+      while (match.find()) {
+        match.appendReplacement(resStr, emv.getRemplacement());
+      }
+      match.appendTail(resStr);
+    } else {
+      ElementModif em = modification;
+      // remplace uniquement la derniere occurence de chaque ligne
+      int res = line.lastIndexOf(em.getSearch());
+      if (res != -1) {
+        resStr.append(line.substring(0, res)).append(em.getModif()).append(
+            line.substring((res + em.getSearch().length()), line.length()));
       }
     }
-    try {
-      if (tmpStr != null) {
-        out.writeBytes(tmpStr);
-      } else {
-        out.writeBytes(pBuf);
-      }
-      out.writeBytes(System.getProperty("line.separator"));
-    } catch (Exception e) {
-      System.out.println("probleme d'ecriture est survenue");
-    }
+    return resStr.toString().trim();
   }
 
   /**
@@ -107,31 +89,13 @@ public class ModifText extends ModifFile {
    */
   @Override
   public void executeModification() throws Exception {
-
-    DataInput dataInput;
-    DataOutput dataOutput;
-    String line;
-
-    File tmpFile = new File(System.getProperty("java.io.tmpdir")
-        + File.separator + "ModifText.sh");
     File inFile = new File(path);
-
-    FileInputStream dis = new FileInputStream(path);
-    FileOutputStream dos = new FileOutputStream(tmpFile);
-
-    dataInput = new DataInputStream(dis);
-    dataOutput = new DataOutputStream(dos);
-
-    while ((line = dataInput.readLine()) != null) {
-      analyseLigne(dataOutput, line);
+    List<String> lines = FileUtils.readLines(inFile);
+    List<String> newLines = new ArrayList<String>(lines.size());
+    for (String line : lines) {
+      newLines.add(analyseLigne(line));
     }
-
-    dis.close();
-    dos.close();
-    inFile.delete();
-    FileUtil.copyFile(tmpFile, inFile);
-    tmpFile.delete();
-
+    FileUtils.writeLines(inFile, newLines);
     // Specifique Linux/Solaris: on met le fichier de script en executable
     if (path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh")) {
       String[] commande = new String[3];
@@ -139,22 +103,6 @@ public class ModifText extends ModifFile {
       commande[1] = "755";
       commande[2] = new String(path);
       Runtime.getRuntime().exec(commande);
-    }
-  }
-
-  public static void main(String[] args) {
-    ModifText mp;
-    String[] strs = { "comments=ouais", "beanId=12385" };
-    System.out.println("test des modification de fichier XML");
-    try {
-      mp = new ModifText("c:\\toto\\SilverpeasSettings.xml");
-      mp.createFileBak(null);
-      mp.addModification("%AUTHENTIFICATION%", "c:\toto\titi");
-      mp.executeModification();
-
-    } catch (Exception e) {
-      e.printStackTrace();
-
     }
   }
 }

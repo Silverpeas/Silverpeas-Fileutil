@@ -57,7 +57,6 @@ public class FileUtilTest {
 
   @Test
   public void simpleTest() throws Exception {
-
     GestionVariables gv = new GestionVariables();
     gv.addVariable("path", "c:\\thomas");
     gv.addVariable("rep", "\\lib\\tutu\\");
@@ -67,12 +66,11 @@ public class FileUtilTest {
   }
 
   @Test
-  public void simpleTestWithEnvronmentVariable() throws Exception {
+  public void simpleTestWithEnvironmentVariable() throws Exception {
     GestionVariables gv = new GestionVariables();
     gv.addVariable("path", "c:\\thomas");
     gv.addVariable("rep", "\\lib\\tutu\\");
     assertEquals(System.getenv("JAVA_HOME"), gv.getValue("JAVA_HOME"));
     assertEquals(System.getenv("JAVA_HOME") + "\\properties.tmp", gv.resolveString("${JAVA_HOME}\\properties.tmp"));
-
   }
 }
