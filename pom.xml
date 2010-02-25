@@ -17,7 +17,7 @@
   <scm>
     <connection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</connection>
     <developerConnection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</developerConnection>
-    <url>https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk/</url>
+    <url>https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</url>
   </scm>
   
   <dependencies>
