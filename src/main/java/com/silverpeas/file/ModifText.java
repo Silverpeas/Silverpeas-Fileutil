@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 public class ModifText extends ModifFile {
 
@@ -97,11 +98,12 @@ public class ModifText extends ModifFile {
     }
     FileUtils.writeLines(inFile, newLines);
     // Specifique Linux/Solaris: on met le fichier de script en executable
-    if (path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh")) {
+    if ((path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh"))&&
+            IOUtils.DIR_SEPARATOR_UNIX == File.separatorChar) {
       String[] commande = new String[3];
       commande[0] = "/bin/chmod";
       commande[1] = "755";
-      commande[2] = new String(path);
+      commande[2] = path;
       Runtime.getRuntime().exec(commande);
     }
   }

@@ -37,8 +37,7 @@ public class StringUtil {
    */
   public static String sReplace(String search, String replace, String source) {
     String returnString;
-    String origSource = new String(source);
-
+    String origSource = "" + source;
     int spot = source.indexOf(search);
     if (spot > -1) {
       returnString = "";
