@@ -98,8 +98,8 @@ public class ModifText extends ModifFile {
     }
     FileUtils.writeLines(inFile, newLines);
     // Specifique Linux/Solaris: on met le fichier de script en executable
-    if ((path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh"))&&
-            IOUtils.DIR_SEPARATOR_UNIX == File.separatorChar) {
+    if ((path.endsWith(".sh") || path.endsWith(".csh") || path.endsWith(".ksh")) &&
+        IOUtils.DIR_SEPARATOR_UNIX == File.separatorChar) {
       String[] commande = new String[3];
       commande[0] = "/bin/chmod";
       commande[1] = "755";
