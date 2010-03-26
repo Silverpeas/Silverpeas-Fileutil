@@ -24,21 +24,21 @@
 package com.silverpeas.file;
 
 import bsh.Interpreter;
-import java.util.Hashtable;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 public class GestionVariables {
 
   /**
    * Hashtable contenant toutes les variables et leurs valeurs
    */
-  private Hashtable<String, String> listeVariables;
+  private Properties listeVariables;
 
   /**
    * @constructor construtor principale de la classe
    */
   public GestionVariables() {
-    listeVariables = new Hashtable();
+    listeVariables = new Properties();
     for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
       listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
     }
@@ -50,7 +50,7 @@ public class GestionVariables {
   /**
    * ajout d'une variable dans la base
    */
-  public void addVariable(String pName, String pValue) {
+  public final void addVariable(String pName, String pValue) {
     listeVariables.put(pName, pValue);
   }
 
@@ -70,14 +70,12 @@ public class GestionVariables {
   public String resolveString(String pStr) throws Exception {
     String newString = "";
     int index = pStr.indexOf("${");
-
     if (index != -1) {
       int index_fin;
       String tmp = pStr;
       while (index != -1) {
         newString = newString.concat(tmp.substring(0, index));
         index_fin = tmp.indexOf('}');
-
         newString = newString.concat(this.getValue(tmp.substring(index + 2,
             index_fin)));
         tmp = tmp.substring(index_fin + 1);
@@ -100,15 +98,15 @@ public class GestionVariables {
       return resolveString(pStr);
     } else {
       if (index != 0) {
-        throw new Exception("(unable to evaluate " + pStr
-            + " because string is not beginning with \"$eval{{\" sequence.");
+        throw new Exception("(unable to evaluate " + pStr +
+            " because string is not beginning with \"$eval{{\" sequence.");
       }
 
       int index_fin = pStr.indexOf("}}");
 
       if (index_fin != pStr.length() - 2) {
-        throw new Exception("(unable to evaluate " + pStr
-            + " because string is not endding with \"}}\" sequence.");
+        throw new Exception("(unable to evaluate " + pStr +
+            " because string is not endding with \"}}\" sequence.");
       }
 
       String resolvedString = pStr.substring(0, index_fin);
@@ -128,10 +126,9 @@ public class GestionVariables {
    * @return la valeur de la variable
    */
   public String getValue(String pVar) throws Exception {
-    String tmp = listeVariables.get(pVar);
+    String tmp = listeVariables.getProperty(pVar);
     if (tmp == null) {
-      throw new Exception("La variable :\"" + pVar
-          + "\" n'existe pas dans la base");
+      throw new Exception("La variable :\"" + pVar + "\" n'existe pas dans la base");
     }
     return tmp;
   }
