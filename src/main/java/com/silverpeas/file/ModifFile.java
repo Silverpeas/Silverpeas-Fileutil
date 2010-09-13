@@ -24,9 +24,8 @@
 package com.silverpeas.file;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
+import org.apache.commons.io.FileUtils;
 
 public abstract class ModifFile {
 
@@ -48,14 +47,14 @@ public abstract class ModifFile {
    * @constructor constructeur de la class
    */
   public ModifFile() {
-    listeModifications = new ArrayList();
+    listeModifications = new ArrayList<ElementModif>();
   }
 
   /**
    * @constructor prend en parametre le chemin du fichier a modifier
    */
   public ModifFile(String path) throws Exception {
-    listeModifications = new ArrayList();
+    listeModifications = new ArrayList<ElementModif>();
     setPath(path);
   }
 
@@ -75,15 +74,7 @@ public abstract class ModifFile {
    * copy un fichier passe en parametre dans le fichier out
    */
   public static void copyFile(File in, File out) throws Exception {
-    byte[] buf = new byte[1024];
-    FileInputStream sIn = new FileInputStream(in);
-    FileOutputStream sOut = new FileOutputStream(out);
-    int i = 0;
-    while ((i = sIn.read(buf)) != -1) {
-      sOut.write(buf, 0, i);
-    }
-    sIn.close();
-    sOut.close();
+    FileUtils.copyFile(in, out);
   }
 
   /**
@@ -137,5 +128,5 @@ public abstract class ModifFile {
   /**
    * methode abstraite pour la modification du fichier
    */
-  protected abstract void executeModification() throws Exception;
+  public abstract void executeModification() throws Exception;
 }

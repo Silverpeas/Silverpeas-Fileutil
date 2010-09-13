@@ -23,7 +23,9 @@
  */
 package com.silverpeas.file;
 
+import bsh.EvalError;
 import bsh.Interpreter;
+import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -64,10 +66,10 @@ public class GestionVariables {
 
   /**
    * resolution de string les variables doivent etre de la forme ${variable} il n'y a pas de
-   * contrainte aux niveaux du nombre de variables utilis�es ex: path=c:\tmp rep=\lib\
+   * contrainte aux niveaux du nombre de variables utilisees ex: path=c:\tmp rep=\lib\
    * ${path}{$rep}\toto ->c:\tmp\lib\toto
    */
-  public String resolveString(String pStr) throws Exception {
+  public String resolveString(String pStr) throws IOException {
     String newString = "";
     int index = pStr.indexOf("${");
     if (index != -1) {
@@ -76,8 +78,7 @@ public class GestionVariables {
       while (index != -1) {
         newString = newString.concat(tmp.substring(0, index));
         index_fin = tmp.indexOf('}');
-        newString = newString.concat(this.getValue(tmp.substring(index + 2,
-            index_fin)));
+        newString = newString.concat(this.getValue(tmp.substring(index + 2, index_fin)));
         tmp = tmp.substring(index_fin + 1);
         index = tmp.indexOf("${");
       }
@@ -92,21 +93,21 @@ public class GestionVariables {
    * resolution des variables d'une string puis evaluation dynamique d'une string de la forme
    * $eval{{.....}}
    */
-  public String resolveAndEvalString(String pStr) throws Exception {
+  public String resolveAndEvalString(String pStr) throws IOException, IllegalArgumentException {
     int index = pStr.indexOf("$eval{{");
     if (index == -1) {
       return resolveString(pStr);
     } else {
       if (index != 0) {
-        throw new Exception("(unable to evaluate " + pStr +
-            " because string is not beginning with \"$eval{{\" sequence.");
+        throw new IllegalArgumentException("(Unable to evaluate " + pStr
+            + " because string is not beginning with \"$eval{{\" sequence.");
       }
 
       int index_fin = pStr.indexOf("}}");
 
       if (index_fin != pStr.length() - 2) {
-        throw new Exception("(unable to evaluate " + pStr +
-            " because string is not endding with \"}}\" sequence.");
+        throw new IllegalArgumentException("(unable to evaluate " + pStr
+            + " because string is not endding with \"}}\" sequence.");
       }
 
       String resolvedString = pStr.substring(0, index_fin);
@@ -114,10 +115,15 @@ public class GestionVariables {
       resolvedString = resolveString(resolvedString);
 
       // evaluation dynamique
-      Interpreter bsh = new bsh.Interpreter();
-      bsh.set("value", new String());
-      bsh.eval(resolvedString);
-      String evaluatedString = (String) bsh.get("value");
+      String evaluatedString = null;
+      try {
+        Interpreter bsh = new Interpreter();
+        bsh.set("value", new String());
+        bsh.eval(resolvedString);
+        evaluatedString = (String) bsh.get("value");
+      } catch (EvalError e) {
+        throw new IllegalArgumentException("(unable to evaluate " + resolvedString, e);
+      }
       return evaluatedString;
     }
   }
@@ -125,10 +131,10 @@ public class GestionVariables {
   /**
    * @return la valeur de la variable
    */
-  public String getValue(String pVar) throws Exception {
+  public String getValue(String pVar) throws IOException {
     String tmp = listeVariables.getProperty(pVar);
     if (tmp == null) {
-      throw new Exception("La variable :\"" + pVar + "\" n'existe pas dans la base");
+      throw new IOException("La variable :\"" + pVar + "\" n'existe pas dans la base");
     }
     return tmp;
   }
