@@ -10,13 +10,13 @@
   <groupId>com.silverpeas.builder</groupId>
   <artifactId>fileutil</artifactId>
   <packaging>jar</packaging>
-  <version>1.4</version>
+  <version>1.4-SNAPSHOT</version>
   <name>FileUtil</name>
 
   <scm>
-    <connection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/tags/fileutil-1.4</connection>
-    <developerConnection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/tags/fileutil-1.4</developerConnection>
-    <url>https://repository.silverpeas.org/svn/silverpeas/services/fileutil/tags/fileutil-1.4</url>
+    <connection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</connection>
+    <developerConnection>scm:svn:https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</developerConnection>
+    <url>https://repository.silverpeas.org/svn/silverpeas/services/fileutil/trunk</url>
   </scm>
 
   <dependencies>
