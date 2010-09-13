@@ -9,7 +9,7 @@
 @REM As a special exception to the terms and conditions of version 3.0 of
 @REM the GPL, you may redistribute this Program in connection with Free/Libre
 @REM Open Source Software ("FLOSS") applications as described in Silverpeas's
-@REM FLOSS exception.  You should have recieved a copy of the text describing
+@REM FLOSS exception.  You should have received a copy of the text describing
 @REM the FLOSS exception, and it is also available here:
 @REM "http://repository.silverpeas.com/legal/licensing"
 @REM
