@@ -21,13 +21,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.silverpeas.file;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.Iterator;
 import java.util.Properties;
 
 public class ModifProperties extends ModifFile {
@@ -63,23 +61,13 @@ public class ModifProperties extends ModifFile {
    */
   @Override
   public void executeModification() throws Exception {
-    FileInputStream inputFile;
-    FileOutputStream outputFile;
-    Iterator i;
-    int index;
-    ElementModif em;
-
     File file = new File(path);
-
     if (file.exists()) {
-      inputFile = new FileInputStream(file);
-      Properties pro = new Properties();
+      FileInputStream inputFile = new FileInputStream(file);
+      Properties pro = new OrderedProperties();
       pro.load(inputFile);
       inputFile.close();
-      i = listeModifications.iterator();
-
-      while (i.hasNext()) {
-        em = ((ElementModif) i.next());
+      for (ElementModif em : listeModifications) {
         if (pro.containsKey(em.getSearch())) {
           if (!em.getModif().equals(pro.getProperty(em.getSearch()))) {
             if (!isModified) {
@@ -94,23 +82,10 @@ public class ModifProperties extends ModifFile {
               + "\" non existante dans le fichier propertie: " + path);
         }
       }
-      outputFile = new FileOutputStream(path);
+      FileOutputStream outputFile = new FileOutputStream(path);
       pro.store(outputFile, messageProperties);
     } else {
       throw new Exception("ATTENTION le fichier:" + path + " n'existe pas");
     }
   }
-
-  public static void main(String[] args) {
-    ModifProperties mp;
-    String[] strs = { "bonjour=different" };
-    try {
-      mp = new ModifProperties("c:\\lib\\test.properties");
-      mp.createFileBak(null);
-      mp.executeModification();
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-  }
-
 }
