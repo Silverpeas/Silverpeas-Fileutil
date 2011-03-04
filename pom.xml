@@ -14,9 +14,9 @@
   <name>FileUtil</name>
 
   <scm>
-    <connection>scm:svn:https://www.silverpeas.org/svn/silverpeas/services/fileutil/trunk</connection>
-    <developerConnection>scm:svn:https://www.silverpeas.org/svn/silverpeas/services/fileutil/trunk</developerConnection>
-    <url>https://www.silverpeas.org/svn/silverpeas/services/fileutil/trunk</url>
+    <connection>scm:git:git@github.com:Silverpeas/Silverpeas-Fileutil.git</connection>
+    <developerConnection>scm:git:git@github.com:Silverpeas/Silverpeas-Fileutil.git</developerConnection>
+    <url>https://github.com/Silverpeas/Silverpeas-Fileutil</url>
   </scm>
   
   <repositories>
