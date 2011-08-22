@@ -10,7 +10,7 @@
   <groupId>com.silverpeas.builder</groupId>
   <artifactId>fileutil</artifactId>
   <packaging>jar</packaging>
-  <version>1.6</version>
+  <version>1.7-SNAPSHOT</version>
   <name>FileUtil</name>
 
   <scm>
