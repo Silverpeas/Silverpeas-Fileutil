@@ -27,6 +27,7 @@ package com.silverpeas.file;
 import bsh.EvalError;
 import bsh.Interpreter;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Map.Entry;
 import java.util.Properties;
 
@@ -63,6 +64,14 @@ public class GestionVariables {
   public void modifyVariable(String pName, String pValue) {
     listeVariables.remove(pName);
     listeVariables.put(pName, pValue);
+  }
+
+  /**
+   * Gets the name of all variables defines in this object
+   * @return an enumeration with all variable names.
+   */
+  public Enumeration<String> getVariableNames() {
+    return (Enumeration<String>) listeVariables.propertyNames();
   }
 
   /**
