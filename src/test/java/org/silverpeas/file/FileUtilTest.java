@@ -22,7 +22,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.silverpeas.file;
+package org.silverpeas.file;
 
 import org.junit.After;
 import org.junit.AfterClass;

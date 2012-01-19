@@ -22,39 +22,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.silverpeas.file;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-public class ElementModif {
+package org.silverpeas.file;
+
+import java.util.regex.Pattern;
+
+/**
+ * @author ehugonnet
+ */
+public class RegexpElementMotif extends ElementModif {
+  /**
+   * tableau de chaine des valeurs
+   */
+  private Pattern pattern;
+  private String remplacement;
 
   /**
-   * Chaine de recherche
+   * @Constructor : prend en parametre la chaine de recherche
    */
-  private String search;
+  public RegexpElementMotif(String pSearch) {
+    super(pSearch, null);
+    pattern = Pattern.compile(pSearch);
+  }
 
-  /**
-   * Chaine de la modification a effectuer
-   */
-  private String modif;
-
-  /**
-   * Constructeur : demande la chaine de recherche et la modification
-   */
-  public ElementModif(String pSearch, String pModif) {
-    search = pSearch;
-    modif = pModif;
+  public Pattern getPattern() {
+    return this.pattern;
   }
 
   /**
-   * @return la modification � effectuer
+   * met a jour le tableau des valeurs
    */
-  public String getModif() {
-    return modif;
+  public void setRemplacement(String pValues) {
+    remplacement = pValues;
   }
 
   /**
-   * @return la chaine de recherche
+   * met a jour le tableau des valeurs
    */
-  public String getSearch() {
-    return search;
+  public String getRemplacement() {
+    return remplacement;
   }
+
 }

@@ -22,7 +22,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.silverpeas.file;
+package org.silverpeas.file;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -43,6 +43,35 @@ public class GestionVariables {
    */
   public GestionVariables() {
     listeVariables = new Properties();
+    for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
+      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
+    }
+    for (Entry<String, String> entry : System.getenv().entrySet()) {
+      addVariable(entry.getKey(), entry.getValue());
+    }
+  }
+
+  /**
+   * @constructor construtor principale de la classe
+   */
+  public GestionVariables(Properties defaultConfig) {
+    listeVariables = new Properties(defaultConfig);
+    for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
+      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
+    }
+    for (Entry<String, String> entry : System.getenv().entrySet()) {
+      addVariable(entry.getKey(), entry.getValue());
+    }
+  }
+
+  /**
+   * @constructor construtor principale de la classe
+   */
+  public GestionVariables(Properties config, Properties defaultConfig) {
+    listeVariables = new Properties(defaultConfig);
+    for (Entry<Object, Object> entry : config.entrySet()) {
+      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
+    }
     for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
       listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
     }
