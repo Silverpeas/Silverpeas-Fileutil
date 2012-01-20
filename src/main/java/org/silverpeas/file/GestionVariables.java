@@ -1,27 +1,23 @@
 /**
  * Copyright (C) 2000 - 2009 Silverpeas
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the
+ * GNU Affero General Public License as published by the Free Software Foundation, either version 3
+ * of the License, or (at your option) any later version.
  *
- * As a special exception to the terms and conditions of version 3.0 of
- * the GPL, you may redistribute this Program in connection with Free/Libre
- * Open Source Software ("FLOSS") applications as described in Silverpeas's
- * FLOSS exception.  You should have received a copy of the text describing
- * the FLOSS exception, and it is also available here:
+ * As a special exception to the terms and conditions of version 3.0 of the GPL, you may
+ * redistribute this Program in connection with Free/Libre Open Source Software ("FLOSS")
+ * applications as described in Silverpeas's FLOSS exception. You should have received a copy of the
+ * text describing the FLOSS exception, and it is also available here:
  * "http://repository.silverpeas.com/legal/licensing"
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License along with this program.
+ * If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.silverpeas.file;
 
 import bsh.EvalError;
@@ -41,7 +37,7 @@ public class GestionVariables {
   /**
    * @constructor construtor principale de la classe
    */
-  public GestionVariables() {
+  private GestionVariables() {
     listeVariables = new Properties();
     for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
       listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
@@ -54,29 +50,22 @@ public class GestionVariables {
   /**
    * @constructor construtor principale de la classe
    */
-  public GestionVariables(Properties defaultConfig) {
-    listeVariables = new Properties(defaultConfig);
-    for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
-      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
-    }
-    for (Entry<String, String> entry : System.getenv().entrySet()) {
-      addVariable(entry.getKey(), entry.getValue());
+  public GestionVariables(Properties defaultConfig) throws IOException {
+    this();
+    for (Entry<Object, Object> entry : defaultConfig.entrySet()) {
+      listeVariables.put(entry.getKey().toString(),
+          resolveAndEvalString(entry.getValue().toString()));
     }
   }
 
   /**
    * @constructor construtor principale de la classe
    */
-  public GestionVariables(Properties config, Properties defaultConfig) {
-    listeVariables = new Properties(defaultConfig);
+  public GestionVariables(Properties config, Properties defaultConfig) throws IOException {
+    this(defaultConfig);
     for (Entry<Object, Object> entry : config.entrySet()) {
-      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
-    }
-    for (Entry<Object, Object> entry : System.getProperties().entrySet()) {
-      listeVariables.put(entry.getKey().toString(), entry.getValue().toString());
-    }
-    for (Entry<String, String> entry : System.getenv().entrySet()) {
-      addVariable(entry.getKey(), entry.getValue());
+      listeVariables.put(entry.getKey().toString(), resolveAndEvalString(entry.getValue()
+          .toString()));
     }
   }
 
@@ -132,21 +121,22 @@ public class GestionVariables {
    * resolution des variables d'une string puis evaluation dynamique d'une string de la forme
    * $eval{{.....}}
    */
-  public String resolveAndEvalString(String pStr) throws IOException, IllegalArgumentException {
+  public final String resolveAndEvalString(String pStr) throws IOException,
+      IllegalArgumentException {
     int index = pStr.indexOf("$eval{{");
     if (index == -1) {
       return resolveString(pStr);
     } else {
       if (index != 0) {
-        throw new IllegalArgumentException("(Unable to evaluate " + pStr
-            + " because string is not beginning with \"$eval{{\" sequence.");
+        throw new IllegalArgumentException("(Unable to evaluate " + pStr +
+            " because string is not beginning with \"$eval{{\" sequence.");
       }
 
       int index_fin = pStr.indexOf("}}");
 
       if (index_fin != pStr.length() - 2) {
-        throw new IllegalArgumentException("(unable to evaluate " + pStr
-            + " because string is not endding with \"}}\" sequence.");
+        throw new IllegalArgumentException("(unable to evaluate " + pStr +
+            " because string is not endding with \"}}\" sequence.");
       }
 
       String resolvedString = pStr.substring(0, index_fin);

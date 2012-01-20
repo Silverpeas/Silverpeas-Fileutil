@@ -24,6 +24,7 @@
 
 package org.silverpeas.file;
 
+import java.util.Properties;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public class FileUtilTest {
 
   @Test
   public void simpleTest() throws Exception {
-    GestionVariables gv = new GestionVariables();
+    GestionVariables gv = new GestionVariables(new Properties());
     gv.addVariable("path", "c:\\thomas");
     gv.addVariable("rep", "\\lib\\tutu\\");
     assertEquals("\\lib\\tutu\\", gv.getValue("rep"));
@@ -68,7 +69,7 @@ public class FileUtilTest {
 
   @Test
   public void simpleTestWithEnvironmentVariable() throws Exception {
-    GestionVariables gv = new GestionVariables();
+    GestionVariables gv = new GestionVariables(new Properties());
     gv.addVariable("path", "c:\\thomas");
     gv.addVariable("rep", "\\lib\\tutu\\");
     assertEquals(System.getenv("JAVA_HOME"), gv.getValue("JAVA_HOME"));
