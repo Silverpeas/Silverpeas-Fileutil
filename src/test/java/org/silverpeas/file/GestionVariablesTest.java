@@ -48,7 +48,7 @@ public class GestionVariablesTest {
    */
   @Test
   public void testAddVariable() throws IOException {
-    String pName = "SILVERPEAS_HOME";
+    String pName = "MY_PATH";
     String pValue = "C:/toto";
     GestionVariables instance = new GestionVariables(new Properties());
     try {
